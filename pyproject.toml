@@ -1,0 +1,38 @@
+[project]
+name = "forgeorm"
+version = "0.1.0"
+description = "A lightweight, blazing-fast ORM designed to simplify model definitions and scale seamlessly across databases."
+authors = [
+  { name="Vicky", email="vickylm258@gmail.com" }
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["orm", "database", "sql", "python", "lightweight", "modular"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dynamic = ["dependencies"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+extend-select = ["E", "F", "N", "I"]
+exclude = ["venv", ".venv", "build", "dist"]
+
+[tool.mypy]
+python_version = "3.9"
+check_untyped_defs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
