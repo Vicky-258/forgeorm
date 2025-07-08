@@ -24,8 +24,10 @@ target-version = ['py39']
 [tool.ruff]
 line-length = 88
 target-version = "py39"
-extend-select = ["E", "F", "N", "I"]
 exclude = ["venv", ".venv", "build", "dist"]
+[tool.ruff.lint]
+extend-select = ["F", "E", "N", "I"]
+fixable = ["ALL"]
 
 [tool.mypy]
 python_version = "3.9"
