@@ -1,11 +1,13 @@
 import sqlite3
 from typing import TYPE_CHECKING
 
+from .base import BaseAdapter
+
 if TYPE_CHECKING:
     pass
 
 
-class SQLiteAdapter:
+class SQLiteAdapter(BaseAdapter):
 
     def __init__(self, db_path: str = "forgeorm.sqlite3") -> None:
         self.db_path = db_path

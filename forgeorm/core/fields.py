@@ -24,6 +24,10 @@ class Field:
             f"pk={self.primary_key})>"
         )
 
+    @property
+    def field_type(self):
+        return type(self)
+
 
 class IntegerField(Field):
     def get_sql_type(self, db_engine="sqlite"):
