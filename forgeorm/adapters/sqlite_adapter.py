@@ -7,10 +7,18 @@ if TYPE_CHECKING:
     pass
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class SQLiteAdapter(BaseAdapter):
 
     def __init__(self, db_path: str = "forgeorm.sqlite3") -> None:
         self.db_path = db_path
+
+    @property
+    def param_style(self) -> str:
+        return "?"
 
     def connect(self):
         if isinstance(self.db_path, sqlite3.Connection):
@@ -51,7 +59,7 @@ class SQLiteAdapter(BaseAdapter):
         sql = self.create_table_sql(model_cls)
         with self.connect() as conn:
             cursor = conn.cursor()
-            print(f"[ForgeORM] Executing SQL:\n{sql}\n")
+            logger.info(f"[ForgeORM] Executing SQL:\n{sql}\n")
             cursor.execute(sql)
             conn.commit()
 
@@ -60,5 +68,5 @@ class SQLiteAdapter(BaseAdapter):
         sql = f"DROP TABLE IF EXISTS {table_name};"
         with self.connect() as conn:
             cursor = conn.cursor()
-            print(f"[ForgeORM] Dropping table if exists:\n{sql}\n")
+            logger.info(f"[ForgeORM] Dropping table if exists:\n{sql}\n")
             cursor.execute(sql)

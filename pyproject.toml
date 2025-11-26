@@ -15,7 +15,10 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-dynamic = ["dependencies"]
+dynamic = []
+dependencies = [
+    "psycopg2>=2.9.10",
+]
 
 [tool.black]
 line-length = 88

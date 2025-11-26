@@ -21,3 +21,9 @@ class BaseAdapter(ABC):
     @abstractmethod
     def _format_default(self, value):
         pass
+
+    @property
+    @abstractmethod
+    def param_style(self) -> str:
+        """Return the parameter style for the database driver (e.g., '?' or '%s')."""
+        pass

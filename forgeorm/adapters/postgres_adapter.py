@@ -3,9 +3,17 @@ import psycopg2
 from .base import BaseAdapter
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class PostgresAdapter(BaseAdapter):
     def __init__(self, db_config: dict):
         self.db_config = db_config  # expects dict with host, dbname, user, password
+
+    @property
+    def param_style(self) -> str:
+        return "%s"
 
     def connect(self):
         return psycopg2.connect(**self.db_config)
@@ -29,16 +37,19 @@ class PostgresAdapter(BaseAdapter):
 
         for field in meta.fields.values():
             col_parts = [field.db_column or field.name]
-            col_parts.append(self.get_sql_type(field.field_type))
-
-            if field.primary_key:
-                col_parts.append("PRIMARY KEY")
-            if not field.nullable:
-                col_parts.append("NOT NULL")
-            if field.default is not None:
-                col_parts.append(f"DEFAULT {self._format_default(field.default)}")
-            if field.unique:
-                col_parts.append("UNIQUE")
+            # Use the field's own method to get the SQL type, just like SQLiteAdapter
+            if field.primary_key and field.get_sql_type("postgres") == "INTEGER":
+                col_parts.append("SERIAL PRIMARY KEY")
+            else:
+                col_parts.append(field.get_sql_type("postgres"))
+                if field.primary_key:
+                    col_parts.append("PRIMARY KEY")
+                if not field.nullable:
+                    col_parts.append("NOT NULL")
+                if field.default is not None:
+                    col_parts.append(f"DEFAULT {self._format_default(field.default)}")
+                if field.unique:
+                    col_parts.append("UNIQUE")
 
             columns.append(" ".join(col_parts))
 
@@ -48,7 +59,7 @@ class PostgresAdapter(BaseAdapter):
         sql = self.create_table_sql(model_cls)
         with self.connect() as conn:
             cursor = conn.cursor()
-            print(f"[ForgeORM] Executing PostgreSQL SQL:\n{sql}\n")
+            logger.info(f"[ForgeORM] Executing PostgreSQL SQL:\n{sql}\n")
             cursor.execute(sql)
             conn.commit()
 
@@ -57,6 +68,6 @@ class PostgresAdapter(BaseAdapter):
         sql = f"DROP TABLE IF EXISTS {table_name};"
         with self.connect() as conn:
             cursor = conn.cursor()
-            print(f"[ForgeORM] Dropping PostgreSQL table:\n{sql}\n")
+            logger.info(f"[ForgeORM] Dropping PostgreSQL table:\n{sql}\n")
             cursor.execute(sql)
             conn.commit()

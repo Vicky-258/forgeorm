@@ -1,7 +1,47 @@
-.venv
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
 
-.idea
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
 
-tests
+# Unit Test / Coverage
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
+.ruff_cache/
 
-pytest.ini
+# Databases
+*.sqlite3
+*.db
+*.rdb
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+sanity_check.db
+forgeorm.db
+analysis_report.md
+implementation_plan.md

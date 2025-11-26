@@ -8,7 +8,9 @@ from forgeorm.core.adapter_loader import get_adapter
 __version__ = "0.1.0"  # Optional versioning
 
 
-def init(engine="sqlite", sqlite_path="forgeorm.sqlite3", postgres_config=None):
+import logging
+
+def init(engine="sqlite", sqlite_path="forgeorm.sqlite3", postgres_config=None, log_level=logging.INFO):
     """
     Initializes ForgeORM with the specified database engine and config.
 
@@ -16,7 +18,10 @@ def init(engine="sqlite", sqlite_path="forgeorm.sqlite3", postgres_config=None):
         engine (str): "sqlite" or "postgres"
         sqlite_path (str): Path to SQLite database file
         postgres_config (dict): Dict with host, dbname, user, password, port
+        log_level (int): Logging level (default: logging.INFO)
     """
+    logging.basicConfig(level=log_level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
     engine = engine.lower()
     set_db_engine(engine)
 
